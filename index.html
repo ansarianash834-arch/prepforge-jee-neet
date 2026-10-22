@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sankalp JEE & NEET | Unlimited Practice, Endless Mock & AIR Report</title>
+
+  <!-- Tailwind CSS & FontAwesome Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f4f4f1; /* Warm Academic Neutral */
+      color: #18181b; /* Crisp Zinc Charcoal */
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #d4d4d8;
+      border-radius: 9999px;
+    }
+    .option-btn {
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #18181b;
+      background-color: #f8fafc;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- TOP HEADER (Neutral Professional Studio Look) -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-stone-200 px-4 py-3 shadow-sm">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-zinc-900 flex items-center justify-center text-white text-lg font-bold shadow-sm">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-extrabold text-lg tracking-tight text-zinc-900">SANKALP PREP</h1>
+            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 border border-stone-300">Unlimited Edition</span>
+          </div>
+          <p class="text-xs text-stone-500 font-medium">Infinite JEE & NEET Practice • Live AIR Analytics</p>
+        </div>
+      </div>
+
+      <!-- Live Session Stats Bar -->
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <div class="px-3 py-1.5 rounded-xl bg-stone-100 border border-stone-200 text-zinc-800 text-xs font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-layer-group text-stone-500"></i> Solved: <span id="liveSolved">0</span>
+        </div>
+        <div class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-check"></i> Sahi: <span id="liveCorrect">0</span>
+        </div>
+        <div class="px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-xmark"></i> Galat: <span id="liveWrong">0</span>
+        </div>
+        <div class="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-trophy text-amber-600"></i> AIR: <span id="liveAIR">#--</span>
+        </div>
+        <button onclick="openExitReportModal()" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+          <i class="fa-solid fa-flag-checkered"></i> Exit & Report
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="bg-white border-b border-stone-200 px-4">
+    <div class="max-w-6xl mx-auto flex items-center gap-2 overflow-x-auto custom-scroll py-2.5">
+      <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-zinc-900 text-white flex items-center gap-2 transition">
+        <i class="fa-solid fa-infinity"></i> Endless Chapter Practice
+      </button>
+      <button onclick="switchTab('mock')" id="tab-mock" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap text-stone-600 hover:bg-stone-100 flex items-center gap-2 transition">
+        <i class="fa-solid fa-stopwatch"></i> Unlimited Mock Test (No Limit)
+      </button>
+      <button onclick="switchTab('mistakes')" id="tab-mistakes" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap text-stone-600 hover:bg-stone-100 flex items-center gap-2 transition">
+        <i class="fa-solid fa-book-open text-rose-600"></i> Mistake Notebook (<span id="mistakeCount">0</span>)
+      </button>
+      <button onclick="switchTab('air')" id="tab-air" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap text-stone-600 hover:bg-stone-100 flex items-center gap-2 transition">
+        <i class="fa-solid fa-bolt text-amber-600"></i> Quick Topics & AIR Calculator
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6">
+
+    <!-- ================= TAB 1: ENDLESS CHAPTER PRACTICE ================= -->
+    <section id="section-practice" class="space-y-5">
+      
+      <!-- Filter & Session Control Bar -->
+      <div class="bg-white border border-stone-200 rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">Class</label>
+            <select id="filterClass" onchange="onFilterChange()" class="w-full bg-stone-50 border border-stone-300 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-900 focus:outline-none focus:border-zinc-900">
+              <option value="all">All Classes (11th & 12th)</option>
+              <option value="11">Class 11th</option>
+              <option value="12">Class 12th</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">Subject</label>
+            <select id="filterSubject" onchange="onFilterChange()" class="w-full bg-stone-50 border border-stone-300 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-900 focus:outline-none focus:border-zinc-900">
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Biology">Biology (Botany + Zoology)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">Chapter</label>
+            <select id="filterChapter" onchange="resetAndStartPracticeStream()" class="w-full bg-stone-50 border border-stone-300 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-900 focus:outline-none focus:border-zinc-900">
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">Difficulty</label>
+            <select id="filterDifficulty" onchange="resetAndStartPracticeStream()" class="w-full bg-stone-50 border border-stone-300 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-900 focus:outline-none focus:border-zinc-900">
+              <option value="all">All Levels (Easy + Med + Hard)</option>
+              <option value="Easy">Easy (NCERT Direct)</option>
+              <option value="Medium">Medium (NEET / JEE Main)</option>
+              <option value="Hard">Hard (Rank Booster / Adv)</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Live Score & Action Row -->
+        <div class="mt-4 pt-3.5 border-t border-stone-200 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-4 text-xs font-semibold flex-wrap">
+            <span class="text-zinc-700"><i class="fa-solid fa-bullseye mr-1"></i> Net Marks: <b id="practiceMarks" class="text-zinc-900 text-sm">0</b></span>
+            <span class="text-emerald-700">Sahi (+4): <b id="practiceCorrect">0</b></span>
+            <span class="text-rose-700">Galat (-1): <b id="practiceWrong">0</b></span>
+            <span class="text-stone-500">Mode: <b class="text-zinc-800">Infinite Auto-Stream (Questions Never End)</b></span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="resetSessionStats()" class="px-3.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-700 text-xs font-bold transition">
+              <i class="fa-solid fa-rotate-right mr-1"></i> Reset Score
+            </button>
+            <button onclick="openExitReportModal()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition shadow-sm">
+              <i class="fa-solid fa-power-off mr-1"></i> Exit & See Analysis
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Endless Question Stream Container -->
+      <div id="questionsContainer" class="space-y-4"></div>
+
+      <!-- Load More / Keep Going Footer -->
+      <div class="text-center py-4">
+        <button onclick="appendMorePracticeQuestions(5)" class="px-6 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-sm shadow-sm transition inline-flex items-center gap-2">
+          <i class="fa-solid fa-plus-circle"></i> Aur Questions Load Karein (+5 Questions)
+        </button>
+        <p class="text-xs text-stone-500 mt-1.5">Note: Jaise-jaise aap upar questions solve karenge, naye questions niche apne aap judte jayenge!</p>
+      </div>
+
+    </section>
+
+    <!-- ================= TAB 2: UNLIMITED MARATHON MOCK TEST ================= -->
+    <section id="section-mock" class="hidden space-y-5">
+      <div class="bg-white border border-stone-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+        
+        <!-- Mock Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-md bg-amber-100 text-amber-800 text-xs font-bold">ENDLESS NTA CBT MODE</span>
+              <h2 class="text-lg sm:text-xl font-extrabold text-zinc-900">Unlimited Marathon Mock Test</h2>
+            </div>
+            <p class="text-xs text-stone-500 mt-1">Koi 15-question ki limit nahi! Jitna solve kar sakte ho karo. Jab thak jao tab <b>"Exit Test"</b> dabao.</p>
+          </div>
+
+          <div class="flex items-center gap-3 flex-wrap">
+            <div class="px-3.5 py-2 rounded-xl bg-stone-100 border border-stone-300 text-zinc-900 font-mono font-bold text-sm">
+              <i class="fa-regular fa-clock mr-1 text-stone-500"></i> <span id="mockStopwatch">00:00</span>
+            </div>
+            <button onclick="startEndlessMock()" id="startMockBtn" class="px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs sm:text-sm transition">
+              <i class="fa-solid fa-play mr-1"></i> Start Unlimited Mock
+            </button>
+            <button onclick="finishAndExitMock()" id="exitMockBtn" class="hidden px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs sm:text-sm transition shadow-sm">
+              <i class="fa-solid fa-flag-checkered mr-1"></i> Exit Test & View Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Active Mock Arena (1-by-1 Infinite Question Card) -->
+        <div id="mockArena" class="mt-6">
+          <div class="text-center py-12 bg-stone-50 rounded-2xl border border-dashed border-stone-300">
+            <i class="fa-solid fa-infinity text-3xl text-stone-400 mb-2"></i>
+            <h3 class="text-base font-bold text-zinc-800">Ready for Non-Stop Question Solving?</h3>
+            <p class="text-xs text-stone-500 max-w-md mx-auto mt-1">Is mock test mein questions kabhi khatam nahi honge (Q1, Q2... Q50... Q100+). Jab aap <b>Exit Test</b> par click karenge tab aapko AIR Rank aur Improvement Report milegi.</p>
+            <button onclick="startEndlessMock()" class="mt-4 px-6 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs transition">
+              Start Solving Now
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: MISTAKE NOTEBOOK ================= -->
+    <section id="section-mistakes" class="hidden space-y-5">
+      <div class="bg-white border border-stone-200 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4 shadow-sm">
+        <div>
+          <h2 class="text-lg font-extrabold text-zinc-900 flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> Aapki Mistake Notebook
+          </h2>
+          <p class="text-xs text-stone-500 mt-0.5">Jo bhi question aapne galat (-1) kiya hai, uska concept aur solution yahan save ho jata hai.</p>
+        </div>
+        <button onclick="clearMistakes()" class="px-4 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold hover:bg-rose-100 transition">
+          Clear Notebook
+        </button>
+      </div>
+      <div id="mistakesContainer" class="space-y-4"></div>
+    </section>
+
+    <!-- ================= TAB 4: QUICK REVISION TOPICS & AIR PREDICTOR ================= -->
+    <section id="section-air" class="hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Custom AIR Predictor -->
+        <div class="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm">
+          <h3 class="text-base font-extrabold text-zinc-900 mb-1"><i class="fa-solid fa-trophy text-amber-500 mr-2"></i>All India Rank (AIR) Calculator</h3>
+          <p class="text-xs text-stone-500 mb-4">Apna target score daal kar check karein ki kis score par kaunsi AIR aur College milta hai:</p>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="text-xs font-bold text-stone-600">Select Target Exam</label>
+              <select id="airExamType" onchange="calculateCustomAIR()" class="w-full mt-1 bg-stone-50 border border-stone-300 rounded-xl px-3.5 py-2.5 text-sm font-medium text-zinc-900">
+                <option value="NEET">NEET UG (Out of 720)</option>
+                <option value="JEE">JEE Main (Out of 300)</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-stone-600">Enter Expected Marks</label>
+              <input type="number" id="airScoreInput" oninput="calculateCustomAIR()" class="w-full mt-1 bg-stone-50 border border-stone-300 rounded-xl px-3.5 py-2.5 text-sm font-bold text-zinc-900" value="655" />
+            </div>
+            <div id="airPredictionOutput" class="p-4 rounded-xl bg-stone-100 border border-stone-200 text-center"></div>
+          </div>
+        </div>
+
+        <!-- Quick Revision Topics Sheet -->
+        <div class="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm">
+          <h3 class="text-base font-extrabold text-zinc-900 mb-1"><i class="fa-solid fa-bolt text-amber-500 mr-2"></i>High-Weightage Quick Revision Topics</h3>
+          <p class="text-xs text-stone-500 mb-4">Exam mein sabse zyada baar puche jaane wale direct formula & NCERT points:</p>
+          <div class="space-y-3 text-xs text-zinc-700 max-h-80 overflow-y-auto custom-scroll pr-1">
+            <div class="p-3 rounded-xl bg-stone-50 border border-stone-200">
+              <b class="text-zinc-900 block mb-1">1. Physics — Laws of Motion & Work-Power:</b>
+              • Pulley Tension: T = [2m₁m₂ / (m₁ + m₂)]g & Acceleration a = [(m₁ - m₂) / (m₁ + m₂)]g.<br/>
+              • Maximum hanging chain length without slipping: L_hang = [μ / (μ + 1)] × L.<br/>
+              • Banking of Road safe speed: v = √[rg(tanθ + μ) / (1 - μtanθ)].
+            </div>
+            <div class="p-3 rounded-xl bg-stone-50 border border-stone-200">
+              <b class="text-zinc-900 block mb-1">2. Physics — Electrostatics & Current:</b>
+              • Identical spheres touched: New charge on each q = (q₁ + q₂) / 2.<br/>
+              • Wire stretched n times: New Resistance R' = n²R.<br/>
+              • Wheatstone Bridge balanced condition: P / Q = R / S (central galvanometer current = 0).
+            </div>
+            <div class="p-3 rounded-xl bg-stone-50 border border-stone-200">
+              <b class="text-zinc-900 block mb-1">3. Chemistry — Equilibrium, Kinetics & Electrochemistry:</b>
+              • Solubility Product for AₓBᵧ: Ksp = xˣ · yʸ · S^(x+y).<br/>
+              • First Order Reaction: t₁/₂ = 0.693 / k (independent of initial concentration) & t₉₉.₉% = 10 × t₁/₂.<br/>
+              • Nernst Equation at 298 K: E_cell = E°_cell - (0.0591 / n) log Q.
+            </div>
+            <div class="p-3 rounded-xl bg-stone-50 border border-stone-200">
+              <b class="text-zinc-900 block mb-1">4. Biology — Genetics & Biotech Must-Knows:</b>
+              • Linear DNA cut with 'n' restriction sites gives (n + 1) fragments; Circular plasmid gives 'n' fragments.<br/>
+              • Number of gametes = 2ⁿ (where n = number of heterozygous pairs).<br/>
+              • PCR steps order: Denaturation (94°C) → Annealing (54°C) → Extension (72°C with Taq Polymerase).
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= EXIT & COMPLETE ANALYSIS REPORT MODAL ================= -->
+  <div id="exitReportModal" class="hidden fixed inset-0 z-50 bg-zinc-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white border border-stone-200 rounded-3xl max-w-3xl w-full p-5 sm:p-7 shadow-2xl my-8 max-h-[92vh] overflow-y-auto custom-scroll">
+      
+      <div class="flex items-start justify-between gap-4 border-b border-stone-200 pb-4">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-md bg-zinc-900 text-white text-[11px] font-bold uppercase">Final Session Scorecard & Diagnosis</span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-zinc-900 mt-1">Aapka Performance & AIR Report</h2>
+        </div>
+        <button onclick="closeExitReportModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-zinc-700 flex items-center justify-center font-bold">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Dynamic Report Body -->
+      <div id="exitReportContent" class="mt-5 space-y-5"></div>
+
+      <!-- Modal Footer Actions -->
+      <div class="mt-6 pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-3">
+        <button onclick="resetSessionStats(); closeExitReportModal();" class="px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-800 text-xs font-bold transition">
+          <i class="fa-solid fa-rotate-right mr-1"></i> Start Fresh Session (Reset Score)
+        </button>
+        <button onclick="closeExitReportModal()" class="px-6 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold transition">
+          Continue Solving More Questions →
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-stone-200 bg-white py-5 text-center text-xs text-stone-500 mt-10">
+    <p>Sankalp JEE & NEET Portal • Clean Neutral Student Edition • Unlimited Questions + Live AIR & Mistake Diagnosis</p>
+  </footer>
+
+  <!-- ================= COMPLETE UNLIMITED JAVASCRIPT ENGINE ================= -->
+  <script>
+    // 1. SYLLABUS STRUCTURE WITH QUICK REVISION NOTES PER CHAPTER
+    const CHAPTER_LIST = {
+      Physics: [
+        { name: "Units & Measurements", class: "11", quickNote: "Percentage error in Z = AᵖBᑫ/Cʳ is ΔZ/Z = p(ΔA/A) + q(ΔB/B) + r(ΔC/C). Least count of Vernier Callipers = 1 MSD - 1 VSD." },
+        { name: "Kinematics (Motion in 1D & 2D)", class: "11", quickNote: "Projectile Max Height H = u²sin²θ/2g, Range R = u²sin2θ/g. Range is maximum at θ = 45° and equal for complementary angles (θ and 90°-θ)." },
+        { name: "Laws of Motion", class: "11", quickNote: "Atwood Pulley: a = (m₁-m₂)g/(m₁+m₂), T = 2m₁m₂g/(m₁+m₂). Max hanging chain fraction = μ/(μ+1). Angle of repose tanθ = μ_s." },
+        { name: "Work, Energy & Power", class: "11", quickNote: "Work-Energy Theorem: W_all = ΔKE. For stable equilibrium: F = -dU/dx = 0 and d²U/dx² > 0. Vertical circle min speed at bottom = √(5gR)." },
+        { name: "Rotational Motion", class: "11", quickNote: "Rolling acceleration down incline: a = g·sinθ / (1 + I/mR²). Solid sphere (I=2/5mR²) beats hollow sphere (I=2/3mR²). Angular momentum L = Iω = const if τ_ext = 0." },
+        { name: "Thermodynamics", class: "11", quickNote: "First Law: ΔQ = ΔU + ΔW. Isothermal W = nRT ln(V₂/V₁). Adiabatic PV^γ = const. Carnot efficiency η = 1 - T_sink/T_source." },
+        { name: "Electrostatics", class: "12", quickNote: "Coulomb Force F = kq₁q₂/r². Electric field inside conductor = 0, potential = constant. Dipole torque τ = pE sinθ, Potential energy U = -pE cosθ." },
+        { name: "Current Electricity", class: "12", quickNote: "Drift velocity v_d = eEτ/m, I = neAv_d. Stretching wire n times makes R' = n²R. Power in series: P ∝ R; Power in parallel: P ∝ 1/R." },
+        { name: "Moving Charges & Magnetism", class: "12", quickNote: "Radius in magnetic field r = mv / qB = √(2mK)/qB. Time period T = 2πm/qB (independent of speed v). Force between parallel wires F/L = μ₀I₁I₂/2πd." },
+        { name: "Ray & Wave Optics", class: "12", quickNote: "Mirror formula: 1/v + 1/u = 1/f. Lens Maker: 1/f = (μ-1)(1/R₁ - 1/R₂). YDSE fringe width β = λD/d; with medium of index μ, β' = β/μ." },
+        { name: "Modern Physics & Semiconductors", class: "12", quickNote: "de-Broglie λ = h/p = h/√(2mK). Photoelectric: K_max = hc/λ - φ₀. Bohr Radius r_n ∝ n²/Z, Energy E_n = -13.6 Z²/n² eV." }
+      ],
+      Chemistry: [
+        { name: "Some Basic Concepts of Chemistry (Mole)", class: "11", quickNote: "Moles = Given Mass / Molar Mass = Volume at STP (L) / 22.4. Dilution law: M₁V₁ = M₂V₂. Limiting reagent decides product amount." },
+        { name: "Structure of Atom", class: "11", quickNote: "Radial nodes = n - l - 1, Angular nodes = l, Total nodes = n - 1. Max electrons in shell = 2n², in subshell = 2(2l+1)." },
+        { name: "Chemical Bonding", class: "11", quickNote: "Steric Number = ½[V + M - C + A]. Bond Order = ½(N_b - N_a). O₂ is paramagnetic with Bond Order = 2. XeF₂ and I₃⁻ are linear (sp³d)." },
+        { name: "Chemical & Ionic Equilibrium", class: "11", quickNote: "Kp = Kc(RT)^Δn_g. pH = -log[H⁺]. Henderson Buffer Equation: pH = pKa + log([Salt]/[Acid]). For Zr₃(PO₄)₄, Ksp = 6912 S⁷." },
+        { name: "General Organic Chemistry (GOC)", class: "11", quickNote: "Carbocation stability: 3° > 2° > 1° (+I, +M, Hyperconjugation stabilize). Acidity increases with -I and -M groups (e.g., -NO₂)." },
+        { name: "Solutions & Colligative Properties", class: "12", quickNote: "ΔT_b = i·K_b·m, ΔT_f = i·K_f·m, Osmotic Pressure π = i·CRT. For dissociation α = (i-1)/(n-1)." },
+        { name: "Electrochemistry", class: "12", quickNote: "ΔG° = -nFE°_cell. Nernst Eq: E = E° - (0.0591/n)log Q. Faraday's 1st Law: Deposited mass w = (E × I × t) / 96500." },
+        { name: "Chemical Kinetics", class: "12", quickNote: "Zero order t₁/₂ = [A]₀/2k. First order k = (2.303/t)log([A]₀/[A]) and t₁/₂ = 0.693/k. Arrhenius Eq: log(k₂/k₁) = (E_a/2.303R)[(T₂-T₁)/T₁T₂]." },
+        { name: "Coordination Compounds", class: "12", quickNote: "Strong field ligands (CN⁻, CO, en) cause pairing. Magnetic moment μ = √[n(n+2)] BM. [Ni(CO)₄] is sp³ tetrahedral & diamagnetic." },
+        { name: "Aldehydes, Ketones & Carboxylic Acids", class: "12", quickNote: "Aldol condensation requires α-Hydrogen; Cannizzaro reaction occurs in aldehydes with NO α-Hydrogen (HCHO, C₆H₅CHO). Tollens test given by aldehydes." }
+      ],
+      Biology: [
+        { name: "Cell: The Unit of Life & Cell Cycle", class: "11", quickNote: "DNA replication occurs in S-phase (DNA doubles from 2C to 4C, chromosome number stays same). Crossing over occurs in Pachytene of Prophase-I." },
+        { name: "Biological Classification & Plant Kingdom", class: "11", quickNote: "Mycoplasma lacks cell wall (insensitive to Penicillin). Bryophytes are amphibians of plant kingdom; Double fertilization is unique to Angiosperms." },
+        { name: "Morphology & Anatomy of Flowering Plants", class: "11", quickNote: "Radial vascular bundles occur in Roots. Kranz anatomy (bundle sheath chloroplasts) is seen in C4 plants (Maize, Sugarcane, Sorghum)." },
+        { name: "Plant Physiology (Photosynthesis & Respiration)", class: "11", quickNote: "C4 primary CO₂ acceptor is PEP (3C) via PEPcase. Photolysis of water is linked to PS-II (Mn²⁺, Cl⁻). RQ of carbohydrates = 1, Fats = 0.7." },
+        { name: "Human Physiology (Digestion, Breathing, Circulation)", class: "11", quickNote: "Oxyhaemoglobin dissociation curve shifts RIGHT at high pCO₂, high H⁺, high Temp (Bohr effect). Pacemaker SA Node generates 70-75 action potentials/min." },
+        { name: "Sexual Reproduction in Flowering Plants", class: "12", quickNote: "Typical angiosperm embryo sac is 7-celled, 8-nucleate (Polygonum type). Endosperm in angiosperms is triploid (3n) due to triple fusion." },
+        { name: "Human Reproduction", class: "12", quickNote: "LH surge on day 14 triggers ovulation. Corpus luteum secretes progesterone to maintain endometrium. Acrosome has hyaluronidase for sperm entry." },
+        { name: "Principles of Inheritance & Variation (Genetics)", class: "12", quickNote: "Dihybrid phenotypic ratio = 9:3:3:1. Test cross is F₁ × homozygous recessive (1:1 ratio). Colour blindness & Haemophilia are X-linked recessive." },
+        { name: "Molecular Basis of Inheritance", class: "12", quickNote: "Chargaff rule: A+G = T+C. Lac operon inducer is Lactose (Allolactose); z-gene codes for β-galactosidase. AUG codes for Methionine & acts as initiator." },
+        { name: "Biotechnology: Principles & Processes", class: "12", quickNote: "EcoRI recognizes 5'-GAATTC-3'. DNA moves towards positive electrode (Anode) in gel electrophoresis, stained by Ethidium Bromide under UV." },
+        { name: "Ecology & Environment", class: "12", quickNote: "10% Energy Law given by Lindeman (pyramid of energy is ALWAYS upright). Logistic growth dN/dt = rN[(K-N)/K]. Species-Area log S = log C + Z log A." }
+      ]
+    };
+
+    // 2. DYNAMIC INFINITE QUESTION GENERATOR (Never Runs Out of Questions!)
+    let globalQuestionCounter = 1;
+
+    function generateDynamicQuestion(subject, cls, chapterName, diff) {
+      const qNum = globalQuestionCounter++;
+      const actualDiff = diff === "all" ? ["Easy", "Medium", "Hard"][qNum % 3] : diff;
+      const chapObj = CHAPTER_LIST[subject].find(c => c.name === chapterName) || CHAPTER_LIST[subject][qNum % CHAPTER_LIST[subject].length];
+      const ch = chapObj.name;
+      const cLevel = chapObj.class;
+      const id = `dyn_${subject}_${qNum}_${Date.now()}_${Math.random().toString(36).slice(2,6)}`;
+
+      let rawQ = "", rawOpts = [], correctVal = "", exp = "", tag = "";
+
+      // ---------------- PHYSICS GENERATOR ----------------
+      if (subject === "Physics") {
+        const variant = qNum % 6;
+        if (ch.includes("Laws of Motion") || variant === 0) {
+          const m1 = 4 + (qNum % 7);
+          const m2 = 2 + (qNum % 3);
+          const g = 10;
+          if (actualDiff === "Easy") {
+            const f1 = 6 * ((qNum % 4) + 1);
+            const f2 = 8 * ((qNum % 4) + 1);
+            const fNet = Math.round(Math.sqrt(f1 * f1 + f2 * f2));
+            const acc = (fNet / m1).toFixed(2);
+            tag = "NEET / JEE Numerical";
+            rawQ = `A block of mass ${m1} kg is acted upon by two perpendicular forces of ${f1} N and ${f2} N on a frictionless surface. Find the magnitude of acceleration of the block.`;
+            correctVal = `${acc} m/s²`;
+            rawOpts = [correctVal, `${(acc * 1.5).toFixed(2)} m/s²`, `${(acc * 0.5).toFixed(2)} m/s²`, `${fNet} m/s²`];
+            exp = `Net Force F_net = √(${f1}² + ${f2}²) = ${fNet} N. Using Newton's 2nd Law, Acceleration a = F_net / m = ${fNet} / ${m1} = ${acc} m/s².`;
+          } else if (actualDiff === "Medium") {
+            const T = ((2 * m1 * m2 * g) / (m1 + m2)).toFixed(1);
+            tag = "Atwood Machine PYQ Pattern";
+            rawQ = `Two masses m₁ = ${m1} kg and m₂ = ${m2} kg are connected by a light inextensible string passing over a smooth massless pulley. What is the tension in the string? (Take g = 10 m/s²)`;
+            correctVal = `${T} N`;
+            rawOpts = [correctVal, `${((m1 + m2) * 5).toFixed(1)} N`, `${((m1 - m2) * 10).toFixed(1)} N`, `${(T / 2).toFixed(1)} N`];
+            exp = `In an Atwood pulley system, Tension T = [2·m₁·m₂ / (m₁ + m₂)] × g = [2 × ${m1} × ${m2} / (${m1} + ${m2})] × 10 = ${T} N.`;
+          } else {
+            const mu = [0.2, 0.25, 0.5, 0.4][qNum % 4];
+            const pct = ((mu / (mu + 1)) * 100).toFixed(1);
+            tag = "Rank Booster / JEE Adv";
+            rawQ = `A uniform heavy chain lies on a rough horizontal table with coefficient of static friction μ = ${mu}. What is the maximum percentage of the chain's length that can hang over the edge without slipping?`;
+            correctVal = `${pct}%`;
+            rawOpts = [correctVal, `${(mu * 100).toFixed(1)}%`, `${((mu / (mu + 2)) * 100).toFixed(1)}%`, `50.0%`];
+            exp = `For equilibrium of hanging chain: Weight of hanging part = Friction on table part ⇒ Maximum fraction f = [μ / (μ + 1)] × 100 = [${mu} / (1 + ${mu})] × 100 = ${pct}%.`;
+          }
+        } else if (ch.includes("Current") || ch.includes("Electrostatics") || variant === 1) {
+          const n = 2 + (qNum % 4);
+          const R0 = 5 + (qNum % 10);
+          const Rnew = n * n * R0;
+          tag = "NCERT + PYQ Concept";
+          rawQ = `A cylindrical metallic wire of initial resistance ${R0} Ω is uniformly stretched so that its length becomes ${n} times its original length (volume remaining constant). What is its new resistance?`;
+          correctVal = `${Rnew} Ω`;
+          rawOpts = [correctVal, `${n * R0} Ω`, `${(R0 / n).toFixed(1)} Ω`, `${Rnew * 2} Ω`];
+          exp = `When a wire is stretched n times at constant volume, its area decreases by factor n, so R' = n² × R = (${n})² × ${R0} = ${Rnew} Ω.`;
+        } else if (ch.includes("Kinematics") || variant === 2) {
+          const u = 20 + (qNum % 5) * 10;
+          const Rmax = (u * u) / 10;
+          tag = "Projectile PYQ";
+          rawQ = `A projectile is fired from ground with an initial speed of ${u} m/s. What is the maximum horizontal range it can achieve on level ground? (Take g = 10 m/s²)`;
+          correctVal = `${Rmax} m`;
+          rawOpts = [correctVal, `${Rmax / 2} m`, `${Rmax * 2} m`, `${u * 2} m`];
+          exp = `Maximum horizontal range occurs at θ = 45° and is given by R_max = u² / g = (${u})² / 10 = ${Rmax} m.`;
+        } else if (ch.includes("Work") || variant === 3) {
+          const a = 2 + (qNum % 4);
+          const xEq = 3 + (qNum % 4);
+          const b = 2 * a * xEq;
+          const c = a * xEq * xEq + 5;
+          const uMin = a * xEq * xEq - b * xEq + c;
+          tag = "Rank Booster / Calculus Physics";
+          rawQ = `The potential energy of a particle moving along the x-axis is given by U(x) = (${a}x² - ${b}x + ${c}) Joules. Find the position of stable equilibrium and minimum potential energy.`;
+          correctVal = `x = ${xEq} m, U_min = ${uMin} J`;
+          rawOpts = [
+            correctVal,
+            `x = ${xEq * 2} m, U_min = 0 J`,
+            `x = ${xEq} m, U_min = ${c} J`,
+            `x = -${xEq} m, U_min = ${uMin} J`
+          ];
+          exp = `At equilibrium, Force F = -dU/dx = 0 ⇒ ${2 * a}x - ${b} = 0 ⇒ x = ${xEq} m. Substituting x = ${xEq} in U(x) gives U_min = ${uMin} J.`;
+        } else {
+          const pErrA = 1 + (qNum % 3);
+          const pErrB = 2 + (qNum % 3);
+          const totalErr = 2 * pErrA + 3 * pErrB;
+          tag = "High Yield Numerical";
+          rawQ = `In an experiment under ${ch}, a physical quantity X is calculated as X = A²B³. If the percentage error in measuring A is ${pErrA}% and in B is ${pErrB}%, what is the maximum percentage error in X?`;
+          correctVal = `${totalErr}%`;
+          rawOpts = [correctVal, `${pErrA + pErrB}%`, `${2 * pErrA + pErrB}%`, `${pErrA * pErrB * 6}%`];
+          exp = `By error propagation rule: (% error in X) = 2(% error in A) + 3(% error in B) = 2(${pErrA}%) + 3(${pErrB}%) = ${totalErr}%.`;
+        }
+      }
+
+      // ---------------- CHEMISTRY GENERATOR ----------------
+      else if (subject === "Chemistry") {
+        const variant = qNum % 5;
+        if (ch.includes("Equilibrium") || variant === 0) {
+          const expPower = 2 + (qNum % 6);
+          const phVal = expPower;
+          tag = "Ionic Equilibrium PYQ";
+          rawQ = `Calculate the pH of an aqueous strong monoprotic acid solution having hydrogen ion concentration [H⁺] = 10⁻${expPower} M at 298 K (assuming negligible contribution from water).`;
+          correctVal = `pH = ${phVal}`;
+          rawOpts = [correctVal, `pH = ${14 - phVal}`, `pH = ${phVal - 1}`, `pH = ${phVal + 0.5}`];
+          exp = `Using pH = -log₁₀[H⁺] = -log₁₀(10⁻${expPower}) = ${phVal}.`;
+        } else if (ch.includes("Kinetics") || variant === 1) {
+          const tHalf = 10 + (qNum % 8) * 5;
+          const numHalves = 2 + (qNum % 3);
+          const totalTime = tHalf * numHalves;
+          const remPct = (100 / Math.pow(2, numHalves)).toFixed(2);
+          tag = "Chemical Kinetics Numerical";
+          rawQ = `A first-order reaction has a half-life (t₁/₂) of ${tHalf} minutes. What percentage of the reactant will remain unreacted after ${totalTime} minutes?`;
+          correctVal = `${remPct}%`;
+          rawOpts = [correctVal, `${(100 - remPct).toFixed(2)}%`, `50.00%`, `${(remPct / 2).toFixed(2)}%`];
+          exp = `Number of half-lives n = Total time / t₁/₂ = ${totalTime} / ${tHalf} = ${numHalves}. Remaining percentage = 100 / 2ⁿ = 100 / 2^${numHalves} = ${remPct}%.`;
+        } else if (ch.includes("Mole") || ch.includes("Solutions") || variant === 2) {
+          const massNaOH = 4 * ((qNum % 5) + 1);
+          const moles = (massNaOH / 40).toFixed(2);
+          const molarity = (massNaOH / 40 / 0.5).toFixed(2);
+          tag = "Mole & Molarity PYQ";
+          rawQ = `${massNaOH} g of NaOH (Molar mass = 40 g/mol) is dissolved in enough water to form 500 mL of solution. What is the molarity (M) of the resulting solution?`;
+          correctVal = `${molarity} M`;
+          rawOpts = [correctVal, `${moles} M`, `${(molarity * 2).toFixed(2)} M`, `${(molarity / 2).toFixed(2)} M`];
+          exp = `Moles of NaOH = ${massNaOH} / 40 = ${moles} mol. Volume in Litres = 500 / 1000 = 0.5 L. Molarity = Moles / Volume(L) = ${moles} / 0.5 = ${molarity} M.`;
+        } else if (ch.includes("Structure of Atom") || variant === 3) {
+          const nVal = 3 + (qNum % 3); // 3, 4, 5
+          const lVal = 1; // p-orbital
+          const rNodes = nVal - lVal - 1;
+          tag = "NCERT Atomic Structure";
+          rawQ = `How many radial (spherical) nodes and angular nodes are present in a ${nVal}p orbital respectively?`;
+          correctVal = `${rNodes} radial nodes, 1 angular node`;
+          rawOpts = [
+            correctVal,
+            `${nVal - 1} radial nodes, 0 angular nodes`,
+            `1 radial node, ${rNodes} angular nodes`,
+            `${nVal} radial nodes, 2 angular nodes`
+          ];
+          exp = `For ${nVal}p orbital, n = ${nVal} and l = 1. Radial nodes = n - l - 1 = ${nVal} - 1 - 1 = ${rNodes}. Angular nodes = l = 1.`;
+        } else {
+          tag = "NCERT Concept Booster";
+          rawQ = `[${ch}] Which of the following thermodynamic/molecular conditions correctly explains high stability and spontaneity in ${ch}?`;
+          correctVal = "Lower potential energy state with negative Gibbs free energy change (ΔG < 0)";
+          rawOpts = [
+            correctVal,
+            "Higher potential energy state with positive ΔG > 0",
+            "Decrease in total entropy of the universe (ΔS_total < 0)",
+            "Breaking of covalent bonds without energy input"
+          ];
+          exp = `In Chemistry, chemical stability corresponds to lower potential energy, and spontaneity at constant T & P requires ΔG < 0 (or ΔS_universe > 0).`;
+        }
+      }
+
+      // ---------------- BIOLOGY GENERATOR ----------------
+      else {
+        const variant = qNum % 5;
+        if (ch.includes("Biotechnology") || variant === 0) {
+          const sites = 3 + (qNum % 6);
+          const linearFrags = sites + 1;
+          tag = "NEET Biotech Numerical";
+          rawQ = `A linear double-stranded DNA molecule has ${sites} recognition sites for a specific restriction endonuclease (EcoRI). Upon complete digestion, how many DNA fragments will be obtained on the agarose gel?`;
+          correctVal = `${linearFrags} fragments`;
+          rawOpts = [correctVal, `${sites} fragments`, `${sites * 2} fragments`, `${sites - 1} fragments`];
+          exp = `For a LINEAR DNA molecule with n restriction sites, complete cleavage produces (n + 1) fragments = ${sites} + 1 = ${linearFrags} fragments. (Circular plasmid gives n fragments).`;
+        } else if (ch.includes("Genetics") || variant === 1) {
+          const heteroPairs = 2 + (qNum % 4); // 2, 3, 4, 5
+          const gametes = Math.pow(2, heteroPairs);
+          tag = "NEET Genetics Calculation";
+          rawQ = `How many genetically different types of gametes can be produced by a diploid organism that is heterozygous for ${heteroPairs} independent gene loci?`;
+          correctVal = `${gametes} types of gametes`;
+          rawOpts = [correctVal, `${heteroPairs * 2} types of gametes`, `${Math.pow(3, heteroPairs)} types of gametes`, `${heteroPairs} types of gametes`];
+          exp = `Formula for number of gamete types = 2ⁿ, where n = number of heterozygous gene pairs (${heteroPairs}). Thus, 2^${heteroPairs} = ${gametes} gametes.`;
+        } else if (ch.includes("Cell") || variant === 2) {
+          const initChr = [16, 20, 24, 46][qNum % 4];
+          tag = "NCERT Cell Cycle Trap";
+          rawQ = `A dividing somatic cell has ${initChr} chromosomes and 2C amount of DNA in G₁ phase. What will be the chromosome number and DNA content in the cell at the G₂ phase just after S-phase?`;
+          correctVal = `${initChr} chromosomes and 4C DNA`;
+          rawOpts = [
+            correctVal,
+            `${initChr * 2} chromosomes and 4C DNA`,
+            `${initChr} chromosomes and 2C DNA`,
+            `${initChr / 2} chromosomes and 4C DNA`
+          ];
+          exp = `During S-phase, DNA content doubles from 2C to 4C, while the chromosome number remains UNCHANGED (${initChr} chromosomes).`;
+        } else if (ch.includes("Molecular") || variant === 3) {
+          const adeninePct = 18 + (qNum % 12); // e.g. 20%
+          const thyminePct = adeninePct;
+          const cytosinePct = (100 - 2 * adeninePct) / 2;
+          tag = "Chargaff's Rule PYQ";
+          rawQ = `In a double-stranded B-DNA sample, if the percentage of Adenine (A) is found to be ${adeninePct}%, what will be the percentage of Cytosine (C) in the same DNA molecule?`;
+          correctVal = `${cytosinePct}%`;
+          rawOpts = [correctVal, `${adeninePct}%`, `${100 - adeninePct}%`, `${cytosinePct * 2}%`];
+          exp = `By Chargaff's rule: %A = %T = ${adeninePct}% (Total A+T = ${2 * adeninePct}%). Remaining G+C = 100 - ${2 * adeninePct} = ${100 - 2 * adeninePct}%. Since %G = %C, Cytosine = ${cytosinePct}%.`;
+        } else {
+          tag = "NCERT Statement Based";
+          rawQ = `[${ch} — Question #${qNum}] Consider the following two statements regarding ${ch}:\nStatement I: Key physiological/regulatory processes in ${ch} follow strict enzymatic and homeostatic control as described in NCERT.\nStatement II: Complete loss of cellular ATP or extreme temperature denatures the enzymes involved in this pathway.`;
+          correctVal = "Both Statement I and Statement II are correct";
+          rawOpts = [
+            correctVal,
+            "Both Statement I and Statement II are incorrect",
+            "Statement I is correct but Statement II is incorrect",
+            "Statement I is incorrect but Statement II is correct"
+          ];
+          exp = `NCERT Core Concept: Biological pathways in ${ch} are enzyme-mediated and strictly require optimum temperature, pH, and metabolic energy.`;
+        }
+      }
+
+      // Shuffle options so Option A is not always the answer!
+      const shuffled = [...rawOpts].sort(() => Math.random() - 0.5);
+      const ansIndex = shuffled.indexOf(correctVal);
+
+      return {
+        id,
+        qNum,
+        subject,
+        class: cLevel,
+        chapter: ch,
+        difficulty: actualDiff,
+        tag,
+        q: rawQ,
+        options: shuffled,
+        ans: ansIndex,
+        exp
+      };
+    }
+
+    // 3. STATE MANAGEMENT
+    let questionRegistry = {}; // Stores all generated questions by ID
+    let userState = JSON.parse(localStorage.getItem("sankalp_unlimited_v3")) || {
+      marks: 0,
+      correct: 0,
+      wrong: 0,
+      attempted: {},      // { qId: chosenIdx }
+      chapterStats: {},   // { chapterName: { correct: 0, wrong: 0, subject: "" } }
+      mistakes: []        // Array of mistake question objects
+    };
+
+    function saveState() {
+      localStorage.setItem("sankalp_unlimited_v3", JSON.stringify(userState));
+      updateHeaderUI();
+    }
+
+    function calculateDynamicAIR(correct, wrong) {
+      const total = correct + wrong;
+      if (total === 0) return null;
+      const accuracy = correct / total;
+      const netScore = correct * 4 - wrong * 1;
+      // Project onto a 720 scale combining accuracy and practice volume bonus
+      const volumeFactor = Math.min(1, 0.72 + total * 0.015);
+      const projected720 = Math.round(Math.max(120, Math.min(720, accuracy * 720 * volumeFactor)));
+      return {
+        rank: estimateRank(projected720, "NEET"),
+        projected720,
+        accuracy: Math.round(accuracy * 100),
+        netScore
+      };
+    }
+
+    function updateHeaderUI() {
+      const totalSolved = userState.correct + userState.wrong;
+      document.getElementById("liveSolved").innerText = totalSolved;
+      document.getElementById("liveCorrect").innerText = userState.correct;
+      document.getElementById("liveWrong").innerText = userState.wrong;
+      document.getElementById("practiceMarks").innerText = userState.marks;
+      document.getElementById("practiceCorrect").innerText = userState.correct;
+      document.getElementById("practiceWrong").innerText = userState.wrong;
+      document.getElementById("mistakeCount").innerText = userState.mistakes.length;
+
+      const airData = calculateDynamicAIR(userState.correct, userState.wrong);
+      document.getElementById("liveAIR").innerText = airData ? `#${airData.rank.toLocaleString()}` : "#--";
+    }
+
+    // 4. FILTER & ENDLESS CHAPTER PRACTICE STREAM
+    let displayedPracticeIds = [];
+
+    function onFilterChange() {
+      const cls = document.getElementById("filterClass").value;
+      const subject = document.getElementById("filterSubject").value;
+      const chapSelect = document.getElementById("filterChapter");
+
+      const chapters = CHAPTER_LIST[subject].filter(c => cls === "all" || c.class === cls);
+      chapSelect.innerHTML = `<option value="all">All Chapters (${subject})</option>`;
+      chapters.forEach(ch => {
+        chapSelect.innerHTML += `<option value="${ch.name}">${ch.name} (Class ${ch.class})</option>`;
+      });
+
+      resetAndStartPracticeStream();
+    }
+
+    function resetAndStartPracticeStream() {
+      displayedPracticeIds = [];
+      document.getElementById("questionsContainer").innerHTML = "";
+      appendMorePracticeQuestions(6); // Start with 6 and auto-append infinitely as user solves!
+    }
+
+    function appendMorePracticeQuestions(count = 1) {
+      const cls = document.getElementById("filterClass").value;
+      const subject = document.getElementById("filterSubject").value;
+      const chapter = document.getElementById("filterChapter").value;
+      const diff = document.getElementById("filterDifficulty").value;
+
+      const validChapters = CHAPTER_LIST[subject].filter(c =>
+        (cls === "all" || c.class === cls) &&
+        (chapter === "all" || c.name === chapter)
+      );
+
+      for (let i = 0; i < count; i++) {
+        const pickedChap = validChapters[Math.floor(Math.random() * validChapters.length)] || CHAPTER_LIST[subject][0];
+        const newQ = generateDynamicQuestion(subject, pickedChap.class, pickedChap.name, diff);
+        questionRegistry[newQ.id] = newQ;
+        displayedPracticeIds.push(newQ.id);
+        renderSinglePracticeCard(newQ, displayedPracticeIds.length);
+      }
+    }
+
+    function renderSinglePracticeCard(q, serialNum) {
+      const container = document.getElementById("questionsContainer");
+      const card = document.createElement("div");
+      card.id = `card_${q.id}`;
+      card.className = "bg-white border border-stone-200 rounded-2xl p-5 shadow-sm transition";
+      card.innerHTML = buildPracticeCardInnerHTML(q, serialNum);
+      container.appendChild(card);
+    }
+
+    function buildPracticeCardInnerHTML(q, serialNum) {
+      const chosen = userState.attempted[q.id];
+      const isAttempted = chosen !== undefined;
+
+      const diffBadge =
+        q.difficulty === "Hard"
+          ? `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">Hard • Rank Booster</span>`
+          : q.difficulty === "Medium"
+          ? `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">Medium • Exam Level</span>`
+          : `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Easy • NCERT Direct</span>`;
+
+      let optionsHTML = "";
+      q.options.forEach((optText, optIndex) => {
+        let btnClass = "border-stone-300 bg-stone-50/60 text-zinc-800";
+        let badge = `<span class="w-6 h-6 rounded-lg bg-stone-200 text-zinc-700 flex items-center justify-center text-xs font-bold shrink-0">${String.fromCharCode(65 + optIndex)}</span>`;
+
+        if (isAttempted) {
+          if (optIndex === q.ans) {
+            btnClass = "border-emerald-600 bg-emerald-50 text-emerald-950 font-semibold";
+            badge = `<span class="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0"><i class="fa-solid fa-check"></i></span>`;
+          } else if (optIndex === chosen && chosen !== q.ans) {
+            btnClass = "border-rose-600 bg-rose-50 text-rose-950 font-semibold";
+            badge = `<span class="w-6 h-6 rounded-lg bg-rose-600 text-white flex items-center justify-center text-xs font-bold shrink-0"><i class="fa-solid fa-xmark"></i></span>`;
+          }
+        }
+
+        optionsHTML += `
+          <button 
+            onclick="handlePracticeAnswer('${q.id}', ${optIndex}, ${serialNum})"
+            ${isAttempted ? "disabled" : ""}
+            class="option-btn w-full text-left p-3.5 rounded-xl border ${btnClass} flex items-center justify-between gap-3 text-sm">
+            <div class="flex items-center gap-3">
+              ${badge}
+              <span>${optText}</span>
+            </div>
+            ${isAttempted && optIndex === q.ans ? '<span class="text-xs font-extrabold text-emerald-700 shrink-0">+4 Sahi ✓</span>' : ''}
+            ${isAttempted && optIndex === chosen && chosen !== q.ans ? '<span class="text-xs font-extrabold text-rose-700 shrink-0">-1 Galat ✗</span>' : ''}
+          </button>
+        `;
+      });
+
+      return `
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="px-2.5 py-0.5 rounded-md bg-stone-100 border border-stone-200 text-zinc-800 text-[11px] font-bold">Class ${q.class} • ${q.chapter}</span>
+            ${diffBadge}
+            <span class="text-[11px] text-stone-500 font-semibold">${q.tag}</span>
+          </div>
+          <span class="text-xs font-bold text-stone-500">+4 / -1 NTA</span>
+        </div>
+
+        <h3 class="text-sm sm:text-base font-bold text-zinc-900 leading-relaxed mb-4 whitespace-pre-line">
+          Q${serialNum}. ${q.q}
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          ${optionsHTML}
+        </div>
+
+        ${isAttempted ? `
+          <div class="mt-4 p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs text-zinc-700 leading-relaxed">
+            <p class="font-extrabold text-zinc-900 mb-1"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Step-by-Step Solution:</p>
+            ${q.exp}
+          </div>
+        ` : ''}
+      `;
+    }
+
+    function handlePracticeAnswer(qId, selectedIndex, serialNum) {
+      if (userState.attempted[qId] !== undefined) return;
+      const q = questionRegistry[qId];
+      if (!q) return;
+
+      userState.attempted[qId] = selectedIndex;
+      recordQuestionOutcome(q, selectedIndex);
+
+      // Update current card in-place
+      const cardEl = document.getElementById(`card_${qId}`);
+      if (cardEl) {
+        cardEl.innerHTML = buildPracticeCardInnerHTML(q, serialNum);
+      }
+
+      // INFINITE STREAM MAGIC: Every time you solve 1 question, 1 new question automatically spawns at the bottom!
+      appendMorePracticeQuestions(1);
+    }
+
+    function recordQuestionOutcome(q, selectedIndex) {
+      if (!userState.chapterStats[q.chapter]) {
+        userState.chapterStats[q.chapter] = { correct: 0, wrong: 0, subject: q.subject };
+      }
+
+      if (selectedIndex === q.ans) {
+        userState.marks += 4;
+        userState.correct += 1;
+        userState.chapterStats[q.chapter].correct += 1;
+      } else {
+        userState.marks -= 1;
+        userState.wrong += 1;
+        userState.chapterStats[q.chapter].wrong += 1;
+        if (!userState.mistakes.some(m => m.q === q.q)) {
+          userState.mistakes.unshift({
+            subject: q.subject,
+            chapter: q.chapter,
+            difficulty: q.difficulty,
+            q: q.q,
+            correctOpt: q.options[q.ans],
+            chosenOpt: q.options[selectedIndex],
+            exp: q.exp
+          });
+        }
+      }
+      saveState();
+    }
+
+    // 5. UNLIMITED MARATHON MOCK TEST (NO 15 QUESTION LIMIT - GOES ON UNTIL EXIT)
+    let mockActive = false;
+    let mockQIndex = 0;
+    let currentMockQ = null;
+    let mockTimerInterval = null;
+    let mockElapsedSeconds = 0;
+
+    function startEndlessMock() {
+      mockActive = true;
+      mockQIndex = 0;
+      mockElapsedSeconds = 0;
+
+      document.getElementById("startMockBtn").classList.add("hidden");
+      document.getElementById("exitMockBtn").classList.remove("hidden");
+
+      if (mockTimerInterval) clearInterval(mockTimerInterval);
+      mockTimerInterval = setInterval(() => {
+        mockElapsedSeconds++;
+        const mins = String(Math.floor(mockElapsedSeconds / 60)).padStart(2, "0");
+        const secs = String(mockElapsedSeconds % 60).padStart(2, "0");
+        document.getElementById("mockStopwatch").innerText = `${mins}:${secs}`;
+      }, 1000);
+
+      loadNextEndlessMockQuestion();
+    }
+
+    function loadNextEndlessMockQuestion() {
+      mockQIndex++;
+      const subjects = ["Physics", "Chemistry", "Biology"];
+      const sub = subjects[mockQIndex % 3];
+      const chList = CHAPTER_LIST[sub];
+      const pickedChap = chList[Math.floor(Math.random() * chList.length)];
+
+      currentMockQ = generateDynamicQuestion(sub, pickedChap.class, pickedChap.name, "all");
+      questionRegistry[currentMockQ.id] = currentMockQ;
+      renderMockArenaCard(false, null);
+    }
+
+    function renderMockArenaCard(isAnswered, selectedIndex) {
+      const q = currentMockQ;
+      const arena = document.getElementById("mockArena");
+
+      let optsHTML = "";
+      q.options.forEach((opt, idx) => {
+        let cls = "border-stone-300 bg-stone-50 text-zinc-800";
+        if (isAnswered) {
+          if (idx === q.ans) cls = "border-emerald-600 bg-emerald-50 text-emerald-950 font-bold";
+          else if (idx === selectedIndex) cls = "border-rose-600 bg-rose-50 text-rose-950 font-bold";
+        }
+        optsHTML += `
+          <button 
+            onclick="submitEndlessMockOption(${idx})"
+            ${isAnswered ? "disabled" : ""}
+            class="option-btn p-4 rounded-xl border ${cls} text-left text-sm flex items-center justify-between gap-2">
+            <span><b>${String.fromCharCode(65 + idx)}.</b> ${opt}</span>
+            ${isAnswered && idx === q.ans ? '<span class="text-xs font-extrabold text-emerald-700">+4 Sahi ✓</span>' : ''}
+            ${isAnswered && idx === selectedIndex && selectedIndex !== q.ans ? '<span class="text-xs font-extrabold text-rose-700">-1 Galat ✗</span>' : ''}
+          </button>
+        `;
+      });
+
+      arena.innerHTML = `
+        <div class="p-5 sm:p-6 rounded-2xl bg-stone-50 border border-stone-200">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-lg bg-zinc-900 text-white text-xs font-bold">Question #${mockQIndex} (Unlimited Stream)</span>
+              <span class="px-2.5 py-1 rounded-lg bg-white border border-stone-300 text-zinc-700 text-xs font-bold">${q.subject} • ${q.chapter}</span>
+            </div>
+            <span class="text-xs font-bold text-stone-500">Difficulty: ${q.difficulty}</span>
+          </div>
+
+          <h3 class="text-base sm:text-lg font-bold text-zinc-900 mb-5 leading-relaxed whitespace-pre-line">${q.q}</h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            ${optsHTML}
+          </div>
+
+          ${isAnswered ? `
+            <div class="mt-4 p-4 rounded-xl bg-white border border-stone-200 text-xs text-zinc-700">
+              <p class="font-bold text-zinc-900 mb-1"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Instant Explanation:</p>
+              ${q.exp}
+            </div>
+          ` : ''}
+
+          <div class="mt-6 pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-3">
+            <button onclick="finishAndExitMock()" class="px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition">
+              <i class="fa-solid fa-power-off mr-1"></i> Exit Test & Show Full Report
+            </button>
+
+            <div class="flex items-center gap-2">
+              <button onclick="loadNextEndlessMockQuestion()" class="px-6 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs sm:text-sm font-bold transition shadow-sm">
+                ${isAnswered ? "Next Question (#" + (mockQIndex + 1) + ") →" : "Skip to Next Question →"}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function submitEndlessMockOption(selectedIndex) {
+      if (!currentMockQ) return;
+      userState.attempted[currentMockQ.id] = selectedIndex;
+      recordQuestionOutcome(currentMockQ, selectedIndex);
+      renderMockArenaCard(true, selectedIndex);
+    }
+
+    function finishAndExitMock() {
+      if (mockTimerInterval) clearInterval(mockTimerInterval);
+      document.getElementById("exitMockBtn").classList.add("hidden");
+      document.getElementById("startMockBtn").classList.remove("hidden");
+      document.getElementById("startMockBtn").innerHTML = `<i class="fa-solid fa-play mr-1"></i> Resume / Start Unlimited Mock`;
+      openExitReportModal();
+    }
+
+    // 6. EXIT & FULL DIAGNOSTIC REPORT MODAL (Score + AIR + Weaknesses + Quick Topics)
+    function openExitReportModal() {
+      const modal = document.getElementById("exitReportModal");
+      const content = document.getElementById("exitReportContent");
+      modal.classList.remove("hidden");
+
+      const totalSolved = userState.correct + userState.wrong;
+      const airData = calculateDynamicAIR(userState.correct, userState.wrong);
+
+      if (totalSolved === 0) {
+        content.innerHTML = `
+          <div class="p-8 rounded-2xl bg-stone-50 border border-stone-200 text-center">
+            <i class="fa-solid fa-circle-info text-3xl text-stone-400 mb-2"></i>
+            <h3 class="text-base font-bold text-zinc-900">Abhi tak aapne koi question solve nahi kiya hai!</h3>
+            <p class="text-xs text-stone-500 mt-1">Pehle kuch questions solve karein, phir Exit par click karne se aapka Sahi/Galat count, AIR Rank aur Improvement Plan yahan dikhega.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Analyze Weak & Strong Chapters
+      const weakChapters = [];
+      const practicedChaptersList = [];
+
+      Object.keys(userState.chapterStats).forEach(chName => {
+        const st = userState.chapterStats[chName];
+        practicedChaptersList.push({ name: chName, ...st });
+        if (st.wrong > 0) {
+          weakChapters.push({ name: chName, wrong: st.wrong, correct: st.correct, subject: st.subject });
+        }
+      });
+
+      weakChapters.sort((a, b) => b.wrong - a.wrong);
+
+      // Build Improvement Recommendations ("Kya-Kya Improvement Hona Chahiye")
+      let improvementsHTML = "";
+      if (airData.accuracy < 65) {
+        improvementsHTML += `<li class="flex items-start gap-2"><i class="fa-solid fa-circle-exclamation text-rose-600 mt-1"></i><span><b>Negative Marking Control Karein:</b> Aapki accuracy abhi <b>${airData.accuracy}%</b> hai (${userState.wrong} galat). Exam mein top rank ke liye accuracy 80%+ honi chahiye. Jin questions mein 50-50 doubt ho unmein tukka mat lagayein.</span></li>`;
+      } else {
+        improvementsHTML += `<li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i><span><b>Strong Accuracy (${airData.accuracy}%):</b> Aapka sahi/galat ratio badhiya hai! Ab apni speed badhayein aur Hard (Rank Booster) questions zyada attempt karein.</span></li>`;
+      }
+
+      if (weakChapters.length > 0) {
+        const topWeakNames = weakChapters.slice(0, 3).map(w => `<b>${w.name}</b> (${w.wrong} galat)`).join(", ");
+        improvementsHTML += `<li class="flex items-start gap-2"><i class="fa-solid fa-wrench text-amber-600 mt-1"></i><span><b>Weak Chapters Jinpar Dhyan Dena Hai:</b> Aapki sabse zyada galtiyan ${topWeakNames} mein hui hain. In chapters ke niche diye gaye Quick Formulas turant revise karein.</span></li>`;
+      }
+
+      if (totalSolved < 15) {
+        improvementsHTML += `<li class="flex items-start gap-2"><i class="fa-solid fa-bolt text-zinc-700 mt-1"></i><span><b>Question Stamina Badhayein:</b> Abhi aapne ${totalSolved} questions lagaye hain. Daily kam se kam 45–60 questions ek sitting mein solve karne ki aadat daalein.</span></li>`;
+      }
+
+      // Build Quick Revision Topics based on Chapters Attempted
+      let quickTopicsHTML = "";
+      practicedChaptersList.forEach(item => {
+        const subChapters = CHAPTER_LIST[item.subject] || [];
+        const found = subChapters.find(c => c.name === item.name);
+        if (found) {
+          quickTopicsHTML += `
+            <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span class="text-xs font-extrabold text-zinc-900">${found.name} (${item.subject})</span>
+                <span class="text-[11px] font-bold ${item.wrong > 0 ? 'text-rose-600' : 'text-emerald-600'}">Sahi: ${item.correct} | Galat: ${item.wrong}</span>
+              </div>
+              <p class="text-xs text-stone-600 leading-relaxed"><b>Quick Revision Formula / Concept:</b> ${found.quickNote}</p>
+            </div>
+          `;
+        }
+      });
+
+      content.innerHTML = `
+        <!-- Top 4 Summary Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200 text-center">
+            <p class="text-[11px] font-bold uppercase text-stone-500">Total Solved</p>
+            <p class="text-2xl font-extrabold text-zinc-900 mt-1">${totalSolved}</p>
+            <p class="text-[11px] text-stone-500 mt-0.5">Accuracy: <b>${airData.accuracy}%</b></p>
+          </div>
+          <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-center">
+            <p class="text-[11px] font-bold uppercase text-emerald-700">Sahi Hua (+4)</p>
+            <p class="text-2xl font-extrabold text-emerald-700 mt-1">${userState.correct}</p>
+            <p class="text-[11px] text-emerald-600 mt-0.5">+${userState.correct * 4} Marks</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-center">
+            <p class="text-[11px] font-bold uppercase text-rose-700">Galat Hua (-1)</p>
+            <p class="text-2xl font-extrabold text-rose-700 mt-1">${userState.wrong}</p>
+            <p class="text-[11px] text-rose-600 mt-0.5">-${userState.wrong} Negative</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-center">
+            <p class="text-[11px] font-bold uppercase text-amber-800">Predicted AIR Rank</p>
+            <p class="text-2xl font-extrabold text-amber-700 mt-1">#${airData.rank.toLocaleString()}</p>
+            <p class="text-[11px] text-amber-800 mt-0.5">Net Score: <b>${userState.marks}</b></p>
+          </div>
+        </div>
+
+        <!-- Kya-Kya Improvement Hona Chahiye -->
+        <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200">
+          <h3 class="text-sm font-extrabold text-zinc-900 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-chart-line text-rose-600"></i> Aapke Liye Improvement Plan (Kya Sudharna Chahiye):
+          </h3>
+          <ul class="space-y-2.5 text-xs text-zinc-700 leading-relaxed">
+            ${improvementsHTML}
+          </ul>
+        </div>
+
+        <!-- Quick Revision Topics for Attempted Chapters -->
+        <div>
+          <h3 class="text-sm font-extrabold text-zinc-900 mb-2.5 flex items-center gap-2">
+            <i class="fa-solid fa-bolt text-amber-500"></i> Quick Revision Topics & Formulas (Jo Chapters Aapne Solve Kiye):
+          </h3>
+          <div class="space-y-2.5 max-h-60 overflow-y-auto custom-scroll pr-1">
+            ${quickTopicsHTML}
+          </div>
+        </div>
+      `;
+    }
+
+    function closeExitReportModal() {
+      document.getElementById("exitReportModal").classList.add("hidden");
+    }
+
+    function resetSessionStats() {
+      userState.marks = 0;
+      userState.correct = 0;
+      userState.wrong = 0;
+      userState.attempted = {};
+      userState.chapterStats = {};
+      saveState();
+      resetAndStartPracticeStream();
+    }
+
+    // 7. MISTAKE NOTEBOOK RENDERER
+    function renderMistakes() {
+      const container = document.getElementById("mistakesContainer");
+      if (userState.mistakes.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white border border-stone-200 rounded-2xl p-10 text-center">
+            <i class="fa-solid fa-circle-check text-3xl text-emerald-600 mb-2"></i>
+            <h3 class="text-base font-bold text-zinc-900">Abhi tak koi Mistake record nahi hui hai!</h3>
+            <p class="text-xs text-stone-500 mt-1">Jab aap koi question galat (-1) karenge, wo revision ke liye apne aap yahan save ho jayega.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = "";
+      userState.mistakes.forEach((m, idx) => {
+        container.innerHTML += `
+          <div class="bg-white border border-rose-200 rounded-2xl p-5 shadow-sm">
+            <span class="text-[11px] font-bold text-rose-700 uppercase">${m.subject} • ${m.chapter} (${m.difficulty})</span>
+            <h4 class="text-sm font-bold text-zinc-900 mt-1 mb-2 whitespace-pre-line">Q${idx + 1}. ${m.q}</h4>
+            <div class="flex flex-wrap gap-3 text-xs mb-3">
+              <span class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 font-semibold">✗ Aapka Answer: ${m.chosenOpt}</span>
+              <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-bold">✓ Sahi Answer: ${m.correctOpt}</span>
+            </div>
+            <div class="p-3 rounded-xl bg-stone-50 border border-stone-200 text-xs text-zinc-700">
+              <b>Solution:</b> ${m.exp}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function clearMistakes() {
+      userState.mistakes = [];
+      saveState();
+      renderMistakes();
+    }
+
+    // 8. AIR PREDICTOR LOGIC
+    function estimateRank(score, exam) {
+      if (exam === "NEET") {
+        if (score >= 715) return 12;
+        if (score >= 700) return 210;
+        if (score >= 685) return 950;
+        if (score >= 665) return 3800;
+        if (score >= 645) return 9200;
+        if (score >= 620) return 21500;
+        if (score >= 580) return 54000;
+        if (score >= 500) return 135000;
+        return 310000;
+      } else {
+        if (score >= 285) return 35;
+        if (score >= 255) return 650;
+        if (score >= 225) return 2900;
+        if (score >= 195) return 9500;
+        if (score >= 165) return 24000;
+        return 75000;
+      }
+    }
+
+    function calculateCustomAIR() {
+      const exam = document.getElementById("airExamType").value;
+      const score = parseInt(document.getElementById("airScoreInput").value) || 0;
+      const rank = estimateRank(score, exam);
+      document.getElementById("airPredictionOutput").innerHTML = `
+        <p class="text-xs text-stone-500 font-semibold">Expected All India Rank (${exam})</p>
+        <p class="text-2xl font-extrabold text-zinc-900 mt-1">AIR #${rank.toLocaleString()}</p>
+        <p class="text-xs font-bold ${score >= 645 || (exam === 'JEE' && score >= 195) ? 'text-emerald-700' : 'text-amber-700'} mt-1">
+          ${score >= 645 || (exam === 'JEE' && score >= 195) ? '✓ Top Government Medical / NIT Seat Safe Zone!' : 'Keep pushing accuracy above 85% to enter Top Govt College Zone!'}
+        </p>
+      `;
+    }
+
+    // 9. TAB SWITCHING
+    function switchTab(tabName) {
+      ["practice", "mock", "mistakes", "air"].forEach(t => {
+        document.getElementById(`section-${t}`).classList.add("hidden");
+        const btn = document.getElementById(`tab-${t}`);
+        btn.classList.remove("bg-zinc-900", "text-white");
+        btn.classList.add("text-stone-600");
+      });
+
+      document.getElementById(`section-${tabName}`).classList.remove("hidden");
+      const activeBtn = document.getElementById(`tab-${tabName}`);
+      activeBtn.classList.add("bg-zinc-900", "text-white");
+      activeBtn.classList.remove("text-stone-600");
+
+      if (tabName === "mistakes") renderMistakes();
+      if (tabName === "air") calculateCustomAIR();
+    }
+
+    // INITIALIZE ON PAGE LOAD
+    window.onload = () => {
+      updateHeaderUI();
+      onFilterChange();
+      calculateCustomAIR();
+    };
+  </script>
+</body>
+</html>
